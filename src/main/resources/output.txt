@@ -1,0 +1,11 @@
+CASH RECEIPT
+Date: 2022-12-21
+
+
+QTY  DESCRIPTION              PRICE     TOTAL     DISCOUNT       
+1    product1                 $5.11     $5.11                    
+
+
+Total without discount: $5.11
+
+TOTAL: $5.11
