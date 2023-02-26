@@ -1,14 +1,11 @@
 CASH RECEIPT
-Date: 2023-02-27
+Date: 2022-12-21
 
 
 QTY  DESCRIPTION              PRICE     TOTAL     DISCOUNT       
-1    product1                 $1.0      $1.0                     
-5    product1                 $1.0      $4.5      %10            
-1    product1                 $1.0      $1.0                     
-5    product1                 $1.0      $4.5      %10            
+1    product1                 $5.11     $5.11                    
 
 
-Total without discount: $16.5
+Total without discount: $5.11
 
-TOTAL: $15.68
+TOTAL: $5.11

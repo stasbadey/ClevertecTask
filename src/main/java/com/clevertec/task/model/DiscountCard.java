@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Objects;
 
 @Entity
 @Table(name = "discount_card")
@@ -33,24 +32,4 @@ public class DiscountCard {
 
     @Column(name = "percentage")
     private int percentage;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        DiscountCard that = (DiscountCard) o;
-
-        if (percentage != that.percentage) return false;
-        if (!Objects.equals(id, that.id)) return false;
-        return Objects.equals(numberOfCard, that.numberOfCard);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (numberOfCard != null ? numberOfCard.hashCode() : 0);
-        result = 31 * result + percentage;
-        return result;
-    }
 }
