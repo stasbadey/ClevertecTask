@@ -11,8 +11,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Collections;
@@ -25,10 +27,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 public class ProductServiceTest {
 
     @Mock
@@ -36,6 +37,7 @@ public class ProductServiceTest {
 
     @InjectMocks
     ProductServiceImpl productService;
+
 
     @Test
     public void getAllWorksFine() {
@@ -95,31 +97,18 @@ public class ProductServiceTest {
             verify(productRepository).findById(num);
         }
 
-       /* @Test
+        @Test
         public void getByIdArgumentCapture() {
-            // given
-            when(productRepository.findById(anyInt())).thenReturn(Optional.empty());
+            Product product = new Product(1, 1.00, "product1");
 
-            // then
-            ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
-            verify(productRepository).findById(captor.capture());
-            Integer argument = captor.getValue();
+            when(productRepository.findById(anyInt())).thenReturn(Optional.of(product));
+            ArgumentCaptor<Integer> argumentCaptor = ArgumentCaptor.forClass(Integer.class);
+            verify(productRepository).findById(argumentCaptor.capture());
 
-            assertThat(argument).isEqualTo(1);
-        }*/
+            assertThat(argumentCaptor.getValue()).isEqualTo(product.getId());
+        }
     }
 
-/*    @Test
-    public void withArgumentCapture() {
-        Product product = new Product(1, 1.00, "product1");
-        given(productRepository.findById(anyInt())).willReturn(Optional.of(product));
-
-        ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
-        verify(productRepository).findById(captor.capture());
-        Integer argument = captor.getValue();
-
-        assertThat(argument).isEqualTo(product.getId());
-    }*/
 
 
     @Test
@@ -142,8 +131,8 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void populateDBAndCheckSizeOfDBShouldReturn0() {
-        int expectedSize = 0;
+    public void populateDBAndCheckSizeOfDBShouldReturn100() {
+        int expectedSize = 100;
 
         productService.populateDb();
         List<Product> productRepositoryAll = productRepository.findAll();

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -22,8 +23,10 @@ import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -85,13 +88,24 @@ public class DiscountCardServiceTest {
         }
 
         @ParameterizedTest
-        @ValueSource(strings = {"1234", "1111", "001"})
+        @ValueSource(strings = {"001", "002", "1111"})
         public void getByIdNotFoundException(String numberOfCard) {
             // given
             when(discountCardRepository.findByNumberOfCard(numberOfCard)).thenReturn(Optional.empty());
 
             // then
             assertThrows(NotFoundException.class, () -> discountCardService.getByNumberOfCard(numberOfCard));
+        }
+
+        @Test
+        public void getByIdArgumentCapture() {
+            DiscountCard discountCard = new DiscountCard(1, "001", 5);
+
+            when(discountCardRepository.findById(anyInt())).thenReturn(Optional.of(discountCard));
+            ArgumentCaptor<Integer> argumentCaptor = ArgumentCaptor.forClass(Integer.class);
+            verify(discountCardRepository).findById(argumentCaptor.capture());
+
+            assertThat(argumentCaptor.getValue()).isEqualTo(discountCard.getId());
         }
     }
 
@@ -117,8 +131,8 @@ public class DiscountCardServiceTest {
     }
 
     @Test
-    public void populateDBAndCheckSizeOfDBShouldReturn0() {
-        int expectedSize = 0;
+    public void populateDBAndCheckSizeOfDBShouldReturn1000() {
+        int expectedSize = 1000;
 
         discountCardService.populateDb();
         List<DiscountCard> discountCardRepositoryAll = discountCardRepository.findAll();
